@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@material-ui/core/styles";
 
 import Header from "../components/Header";
+import HomeScreen from "../screens/HomeScreen";
 import Footer from "../components/Footer";
 
 import theme from "../styles/theme";
@@ -13,9 +14,8 @@ export default function Home() {
       <div>
         <Header />
         <main className={classes.main}>
-          <h1>Welcome to Next.js! LALAL</h1>
+          <HomeScreen />
         </main>
-
         <Footer />
       </div>
     </ThemeProvider>

@@ -1,12 +1,26 @@
-import { Grid } from "@material-ui/core";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "#252935",
+    height: "8vh",
+  },
+}));
 
 function Footer() {
+  const classes = useStyles();
   return (
-    <footer>
-      <Grid container direction="row" justify="center">
-        <Grid item>Lelelele</Grid>
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="center"
+      className={classes.root}
+    >
+      <Grid item>
+        <Typography variant="h6">Footer</Typography>
       </Grid>
-    </footer>
+    </Grid>
   );
 }
 

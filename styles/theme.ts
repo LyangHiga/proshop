@@ -8,12 +8,11 @@ const theme = createMuiTheme({
       main: BLUE_NIGHT,
     },
   },
-  // typography: {
-  //   // h6: {
-  //   //   // fontFamily: "Roboto",
-  //   //   // fontWeight: 700,
-  //   // },
-  // },
+  typography: {
+    h6: {
+      fontWeight: 300,
+    },
+  },
 });
 
 export default theme;
