@@ -9,6 +9,8 @@ import {
   makeStyles,
 } from "@material-ui/core";
 
+import Review from "./Review";
+
 import ProductModel from "../models/Product";
 
 interface ProductProps {
@@ -54,10 +56,10 @@ const Product = (props: ProductProps) => {
           >
             <strong>{product.name}</strong>
           </Typography>
-          <Typography>
-            {product.rating} from {product.numReviews} Reviews
+          <Review stars={product.rating} />
+          <Typography style={{ marginTop: "1rem" }}>
+            ${product.price}
           </Typography>
-          <Typography>${product.price}</Typography>
         </CardContent>
         <CardActions>
           <Button size="small">Learn More</Button>
