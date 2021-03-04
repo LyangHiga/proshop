@@ -1,15 +1,26 @@
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { Grid, Typography } from "@material-ui/core";
 
+import ProductModel from "../models/Product";
 import Product from "../components/Product";
-import products from "../products";
+// import productsFile from "../products";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 import useStyles from "../styles/indexStyles";
 
-export default function Home() {
+interface HomeProps {
+  products: ProductModel[];
+}
+
+export default function Home({
+  latestProducts,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const classes = useStyles();
+  const { products }: HomeProps = latestProducts!;
+  // console.log("LELELELLELELELELELLELE");
+  // console.log(latestProducts.products);
   return (
     <div>
       <Header />
@@ -34,3 +45,15 @@ export default function Home() {
     </div>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await fetch("http://localhost:3000/api/products");
+  const data: ProductModel[] = await res.json();
+
+  return {
+    props: {
+      latestProducts: data,
+    },
+    revalidate: 10,
+  };
+};
