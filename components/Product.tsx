@@ -1,43 +1,22 @@
 import Image from "next/image";
-
 import {
   Typography,
   Card,
   CardContent,
   CardActions,
   Button,
-  makeStyles,
 } from "@material-ui/core";
 
 import Review from "./Review";
-
 import ProductModel from "../models/Product";
+
+import useStyles from "../styles/ProductStyles";
 
 interface ProductProps {
   product: ProductModel;
 }
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-    boxShadow: "2px 2px 5px gray",
-    margin: "0 2rem 2rem 0",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
-
-const Product = (props: ProductProps) => {
-  const { product } = props;
+const Product = ({ product }: ProductProps) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
@@ -57,9 +36,7 @@ const Product = (props: ProductProps) => {
             <strong>{product.name}</strong>
           </Typography>
           <Review stars={product.rating} />
-          <Typography style={{ marginTop: "1rem" }}>
-            ${product.price}
-          </Typography>
+          <Typography className={classes.price}>${product.price}</Typography>
         </CardContent>
         <CardActions>
           <Button size="small">Learn More</Button>

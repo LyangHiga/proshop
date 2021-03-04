@@ -1,11 +1,6 @@
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: "#252935",
-    height: "8vh",
-  },
-}));
+import useStyles from "../styles/FooterStyles";
 
 function Footer() {
   const classes = useStyles();
@@ -15,10 +10,12 @@ function Footer() {
       direction="row"
       justify="center"
       alignItems="center"
-      className={classes.root}
+      className={classes.footerContainer}
     >
       <Grid item>
-        <Typography variant="h6">Footer</Typography>
+        <Typography variant="h6" className={classes.footer}>
+          Footer
+        </Typography>
       </Grid>
     </Grid>
   );

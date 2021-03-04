@@ -1,23 +1,36 @@
-import { ThemeProvider } from "@material-ui/core/styles";
+import { Grid, Typography } from "@material-ui/core";
+
+import Product from "../components/Product";
+import products from "../products";
 
 import Header from "../components/Header";
-import HomeScreen from "../screens/HomeScreen";
 import Footer from "../components/Footer";
 
-import theme from "../styles/theme";
-import styles from "../styles/indexStyles";
+import useStyles from "../styles/indexStyles";
 
 export default function Home() {
-  const classes = styles();
+  const classes = useStyles();
   return (
-    <ThemeProvider theme={theme}>
-      <div>
-        <Header />
-        <main className={classes.main}>
-          <HomeScreen />
-        </main>
-        <Footer />
-      </div>
-    </ThemeProvider>
+    <div>
+      <Header />
+      <main className={classes.main}>
+        <Grid container>
+          <Grid item>
+            <Typography variant="h4">Latest Products</Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            justify="center"
+            className={classes.prodContainer}
+          >
+            {products.map((p) => (
+              <Product product={p} key={p._id} />
+            ))}
+          </Grid>
+        </Grid>
+      </main>
+      <Footer />
+    </div>
   );
 }
