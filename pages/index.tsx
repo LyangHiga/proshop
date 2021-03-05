@@ -19,12 +19,10 @@ export default function Home({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const classes = useStyles();
   const { products }: HomeProps = latestProducts!;
-  // console.log("LELELELLELELELELELLELE");
-  // console.log(latestProducts.products);
   return (
     <div>
       <Header />
-      <main className={classes.main}>
+      <main className="main">
         <Grid container>
           <Grid item>
             <Typography variant="h4">Latest Products</Typography>
