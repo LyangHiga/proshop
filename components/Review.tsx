@@ -2,10 +2,13 @@ import StarIcon from "@material-ui/icons/Star";
 import StarHalfIcon from "@material-ui/icons/StarHalf";
 import StarOutlineIcon from "@material-ui/icons/StarOutline";
 
+import { Typography, Grid } from "@material-ui/core";
+
 import useStyles from "../styles/ReviewStyles";
 
 interface ReviewProps {
   stars: number;
+  numberReviews: number;
 }
 
 const Review = (props: ReviewProps) => {
@@ -19,7 +22,7 @@ const Review = (props: ReviewProps) => {
   const emptyStars = halfStar ? 4 - numberOfStars : 5 - numberOfStars;
 
   return (
-    <div>
+    <Grid container alignItems="center">
       {[...Array(numberOfStars)].map((e, i) => (
         <StarIcon key={i} className={classes.star} />
       ))}
@@ -29,7 +32,13 @@ const Review = (props: ReviewProps) => {
         : [...Array(emptyStars)].map((e, i) => (
             <StarOutlineIcon key={i} className={classes.star} />
           ))}
-    </div>
+      <Typography
+        variant="overline"
+        style={{ display: "inline-block", marginLeft: "1rem" }}
+      >
+        {props.numberReviews} Reviews
+      </Typography>
+    </Grid>
   );
 };
 

@@ -12,6 +12,11 @@ const theme = createMuiTheme({
     h6: {
       fontWeight: 300,
     },
+    subtitle1: {
+      fontSize: "1.4rem",
+      fontWeight: 700,
+      color: BLUE_NIGHT,
+    },
   },
 });
 

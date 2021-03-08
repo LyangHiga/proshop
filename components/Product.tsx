@@ -1,3 +1,4 @@
+import Link from "next/Link";
 import Image from "next/image";
 import {
   Typography,
@@ -19,8 +20,8 @@ interface ProductProps {
 const Product = ({ product }: ProductProps) => {
   const classes = useStyles();
   return (
-    <Card className={classes.root}>
-      <a href={`/products/${product._id}`}>
+    <Link href={`/product/${product._id}`}>
+      <Card className={classes.root}>
         <CardContent>
           <Image
             src={product.image}
@@ -35,14 +36,19 @@ const Product = ({ product }: ProductProps) => {
           >
             <strong>{product.name}</strong>
           </Typography>
-          <Review stars={product.rating} />
-          <Typography className={classes.price}>${product.price}</Typography>
+          <Review stars={product.rating} numberReviews={product.numReviews} />
+          <Typography
+            className={classes.price}
+            style={{ display: "inline-block" }}
+          >
+            ${product.price}
+          </Typography>
         </CardContent>
         <CardActions>
           <Button size="small">Learn More</Button>
         </CardActions>
-      </a>
-    </Card>
+      </Card>
+    </Link>
   );
 };
 
