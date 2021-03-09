@@ -3,7 +3,6 @@ import { Grid, Typography } from "@material-ui/core";
 
 import ProductModel from "../models/Product";
 import Product from "../components/Product";
-// import productsFile from "../products";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -14,11 +13,8 @@ interface HomeProps {
   products: ProductModel[];
 }
 
-export default function Home({
-  latestProducts,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Home({ products }: HomeProps) {
   const classes = useStyles();
-  const { products }: HomeProps = latestProducts!;
   return (
     <div>
       <Header />
@@ -45,12 +41,12 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch("http://localhost:3000/api/products");
+  const res = await fetch("http://localhost:5000/api/products");
   const data: ProductModel[] = await res.json();
 
   return {
     props: {
-      latestProducts: data,
+      products: data,
     },
     revalidate: 10,
   };

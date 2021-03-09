@@ -104,8 +104,9 @@ export default ProductDeatils;
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params!;
-  const res = await fetch(`http://localhost:3000/api/product/${id}`);
-  const { product } = await res.json();
+  const res = await fetch(`http://localhost:5000/api/products/${id}`);
+  const product = await res.json();
+
   return {
     props: {
       product,
