@@ -1,10 +1,5 @@
-import {
-  GetStaticProps,
-  GetStaticPaths,
-  InferGetStaticPropsType,
-  GetServerSideProps,
-} from "next";
-
+import { GetServerSideProps } from "next";
+import Error from "next/error";
 import Link from "next/Link";
 import Image from "next/image";
 
@@ -22,9 +17,13 @@ import theme from "../../styles/theme";
 
 interface ProdDetailsProp {
   product: ProductModel;
+  err: boolean;
 }
 
-const ProductDeatils = ({ product }: ProdDetailsProp) => {
+const ProductDeatils = ({ product, err }: ProdDetailsProp) => {
+  if (err) {
+    return <Error statusCode={404} />;
+  }
   const classes = useStyles();
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   return (
@@ -83,33 +82,22 @@ const ProductDeatils = ({ product }: ProdDetailsProp) => {
 
 export default ProductDeatils;
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   return {
-//     paths: [{ params: { id: "1" } }],
-//     fallback: "blocking",
-//   };
-// };
-
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   const { id } = params!;
-//   const res = await fetch(`http://localhost:3000/api/product/${id}`);
-//   const { product } = await res.json();
-//   return {
-//     props: {
-//       product,
-//     },
-//     revalidate: 10,
-//   };
-// };
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  res,
+}) => {
   const { id } = params!;
-  const res = await fetch(`http://localhost:5000/api/products/${id}`);
-  const product = await res.json();
+  const data = await fetch(`http://localhost:5000/api/products/${id}`);
+
+  if (!data.ok) {
+    res.statusCode = 404;
+  }
+  const product = await data.json();
 
   return {
     props: {
       product,
+      err: !data.ok,
     },
   };
 };
