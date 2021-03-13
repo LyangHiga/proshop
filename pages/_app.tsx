@@ -6,6 +6,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
+import { storeWrapper } from "../store/store";
 import theme from "../styles/theme";
 import "../styles/globals.css";
 
@@ -35,4 +36,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default storeWrapper.withRedux(MyApp);

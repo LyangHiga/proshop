@@ -1,5 +1,9 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { Grid, Typography } from "@material-ui/core";
+
+import { useSelector } from "react-redux";
+import { storeWrapper } from "../store/store";
+import { productList } from "../store/actions/product/productListActions";
+import { RootState } from "../store/reducers/reducers";
 
 import ProductModel from "../models/Product";
 import Product from "../components/Product";
@@ -9,12 +13,12 @@ import Footer from "../components/Footer";
 
 import useStyles from "../styles/indexStyles";
 
-interface HomeProps {
-  products: ProductModel[];
-}
-
-export default function Home({ products }: HomeProps) {
+export default function Home() {
   const classes = useStyles();
+  const products: ProductModel[] = useSelector(
+    (state: RootState) => state.productList
+  );
+
   return (
     <div>
       <Header />
@@ -30,7 +34,7 @@ export default function Home({ products }: HomeProps) {
             className={classes.prodContainer}
           >
             {products.map((p) => (
-              <Product product={p} key={p._id} />
+              <Product product={p} key={p.name} />
             ))}
           </Grid>
         </Grid>
@@ -40,14 +44,14 @@ export default function Home({ products }: HomeProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps = storeWrapper.getStaticProps(async ({ store }) => {
   const res = await fetch("http://localhost:5000/api/products");
-  const data: ProductModel[] = await res.json();
+  const products: ProductModel[] = await res.json();
+
+  store.dispatch(productList(products));
 
   return {
-    props: {
-      products: data,
-    },
+    props: {},
     revalidate: 10,
   };
-};
+});
