@@ -6,7 +6,12 @@ import {
   Typography,
   Divider,
   Button,
+  FormControl,
+  MenuItem,
+  Select,
 } from "@material-ui/core";
+
+import { Fragment, useState } from "react";
 
 import ProductModel from "../models/Product";
 
@@ -18,6 +23,37 @@ interface ProdCardProp {
 
 const ProductCard = ({ product }: ProdCardProp) => {
   const classes = useStyles();
+  const [qty, setQty] = useState(0);
+
+  const qtySection = (
+    <Fragment>
+      <Grid
+        container
+        justify="space-between"
+        alignItems="center"
+        className={classes.cardTextContainer}
+      >
+        <Typography variant="body1">Quantity: </Typography>
+        <FormControl className={classes.formControl}>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={qty}
+            className={classes.select}
+            onChange={(e) => setQty(e.target.value as number)}
+          >
+            {[...Array(product.countInStock).keys()].map((i) => (
+              <MenuItem value={i++} key={i++}>
+                {i++}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Divider className={classes.divider} />
+    </Fragment>
+  );
+
   return (
     <Card className={classes.card}>
       <CardContent className={classes.cardContent}>
@@ -43,6 +79,7 @@ const ProductCard = ({ product }: ProdCardProp) => {
           </Typography>
         </Grid>
         <Divider className={classes.divider} />
+        {product.countInStock > 0 && qtySection}
       </CardContent>
       <CardActions>
         <Grid container justify="center" alignItems="center">

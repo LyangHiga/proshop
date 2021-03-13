@@ -52,6 +52,14 @@ const useStyles = makeStyles((theme) => ({
   cardText: {
     marginRight: "2rem",
   },
+  formControl: {
+    padding: 0,
+    minWidth: "3rem",
+    marginRight: "2rem",
+  },
+  select: {
+    textAlign: "center",
+  },
 }));
 
 export default useStyles;
