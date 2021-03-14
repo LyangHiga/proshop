@@ -1,3 +1,6 @@
+import { useRouter } from "next/router";
+import { Fragment, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Card,
   CardContent,
@@ -11,7 +14,7 @@ import {
   Select,
 } from "@material-ui/core";
 
-import { Fragment, useState } from "react";
+import { addToCart } from "../store/actions/cart/cartAction";
 
 import ProductModel from "../models/Product";
 
@@ -22,8 +25,19 @@ interface ProdCardProp {
 }
 
 const ProductCard = ({ product }: ProdCardProp) => {
+  const router = useRouter();
   const classes = useStyles();
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
+  const dispatch = useDispatch();
+
+  const AddToCartHandle = () => {
+    const item = {
+      ...product,
+      quantity: qty,
+    };
+    dispatch(addToCart(item));
+    router.push("/cart");
+  };
 
   const qtySection = (
     <Fragment>
@@ -42,11 +56,13 @@ const ProductCard = ({ product }: ProdCardProp) => {
             className={classes.select}
             onChange={(e) => setQty(e.target.value as number)}
           >
-            {[...Array(product.countInStock).keys()].map((i) => (
-              <MenuItem value={i++} key={i++}>
-                {i++}
-              </MenuItem>
-            ))}
+            {Array.from({ length: product.countInStock }, (_, i) => i + 1).map(
+              (i) => (
+                <MenuItem value={i} key={i}>
+                  {i}
+                </MenuItem>
+              )
+            )}
           </Select>
         </FormControl>
       </Grid>
@@ -90,6 +106,7 @@ const ProductCard = ({ product }: ProdCardProp) => {
               color="primary"
               size="large"
               disabled={product.countInStock <= 0}
+              onClick={AddToCartHandle}
             >
               {product.countInStock > 0 ? "Add To Cart" : "Out of Stock"}
             </Button>

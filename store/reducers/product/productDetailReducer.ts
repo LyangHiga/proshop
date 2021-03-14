@@ -4,11 +4,6 @@ import { PRODUCT_DETAIL } from "../../actions/actions";
 
 import Product from "../../../models/Product";
 
-type productDetailAction = {
-  type: string;
-  payload: Product;
-};
-
 const initialState = <Product>{};
 
 const productDetailReducer = (state = initialState, action: AnyAction) => {

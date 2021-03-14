@@ -84,7 +84,6 @@ const ProductDeatils = () => {
           </Grid>
         </Grid>
       </Grid>
-
       <Footer />
     </div>
   );
