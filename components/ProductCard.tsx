@@ -31,11 +31,7 @@ const ProductCard = ({ product }: ProdCardProp) => {
   const dispatch = useDispatch();
 
   const AddToCartHandle = () => {
-    const item = {
-      ...product,
-      quantity: qty,
-    };
-    dispatch(addToCart(item));
+    dispatch(addToCart(product, qty));
     router.push("/cart");
   };
 

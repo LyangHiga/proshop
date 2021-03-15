@@ -22,8 +22,8 @@ const cartReducer = (state = initialState, action: AnyAction) => {
       state = localStorage.getItem("cartItems")
         ? JSON.parse(localStorage.getItem("cartItems")!)
         : [];
-      localStorage.setItem("cartItems", JSON.stringify([...state, item]));
-      return [...state, item];
+      localStorage.setItem("cartItems", JSON.stringify([item, ...state]));
+      return [item, ...state];
     case CARD_ADD_LIST:
       localStorage.setItem(
         "cartItems",

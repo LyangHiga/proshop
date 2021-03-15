@@ -1,24 +1,18 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Grid, Typography } from "@material-ui/core";
 
+import CartItem from "../components/CartItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { RootState } from "../store/reducers/reducers";
 
-import {
-  addListToCart,
-  removeFromCart,
-} from "../store/actions/cart/cartAction";
+import { addListToCart } from "../store/actions/cart/cartAction";
 import Item from "../models/Item";
 
 const cart = () => {
   const dispatch = useDispatch();
-
-  const removeItemHanlder = (index: number) => {
-    dispatch(removeFromCart(index));
-  };
 
   useEffect(() => {
     if (localStorage.getItem("cartItems")) {
@@ -36,21 +30,18 @@ const cart = () => {
   return (
     <div>
       <Header />
-      <div className="main">
-        <p>Items</p>
-        {cartItems.map((item, i) => (
-          <div>
-            <p key={i}>
-              {item._id} - {item.name} - ${item.price} - quantity:{" "}
-              {item.quantity}
-              <DeleteIcon
-                key={`delete-${item._id}`}
-                onClick={() => removeItemHanlder(i)}
-              />
-            </p>
-          </div>
-        ))}
-      </div>
+      <main className="main">
+        <Grid container>
+          <Grid item style={{}}>
+            <Typography variant="h4">Cart Items: </Typography>
+          </Grid>
+          <Grid item container style={{ marginTop: "2rem" }}>
+            {cartItems.map((item, i) => (
+              <CartItem item={item} key={`cart-item-${i}`} i={i} />
+            ))}
+          </Grid>
+        </Grid>
+      </main>
       <Footer />
     </div>
   );
