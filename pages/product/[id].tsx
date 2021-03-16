@@ -1,12 +1,9 @@
+import { GetServerSideProps } from "next";
 import Error from "next/error";
 import Link from "next/Link";
 import Image from "next/image";
 
 import { Button, Grid, useMediaQuery } from "@material-ui/core";
-
-import { useSelector } from "react-redux";
-import { storeWrapper } from "../../store/store";
-import { productDetail } from "../../store/actions/product/productDetailActions";
 
 import ProductInfo from "../../components/ProductInfo";
 import ProductCard from "../../components/ProductCard";
@@ -14,25 +11,23 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 import ProductModel from "../../models/Product";
-import { RootState } from "../../store/reducers/reducers";
 
 import useStyles from "../../styles/ProductDetailsStyles";
 import theme from "../../styles/theme";
 
-const ProductDeatils = () => {
+interface ProductDetailProps {
+  product: ProductModel;
+  err: boolean;
+}
+
+const ProductDeatils = ({ product, err }: ProductDetailProps) => {
   const classes = useStyles();
+  // TODO: Rerenders! runs after get server side props, display is alredy set
+  // useEffect?
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const err: boolean = useSelector(
-    (state: RootState) => state.productDetail.err
-  );
-
-  const product: ProductModel = useSelector(
-    (state: RootState) => state.productDetail.product
-  );
-
-  if (err || err === undefined) {
-    // TODO: custom page for product not found ?
+  if (err) {
+    // TODO: custom page for product not found
     return <Error statusCode={404} />;
   }
 
@@ -91,17 +86,18 @@ const ProductDeatils = () => {
 
 export default ProductDeatils;
 
-export const getServerSideProps = storeWrapper.getServerSideProps(
-  async ({ params, store }) => {
-    const { id } = params!;
-    const data = await fetch(`http://localhost:5000/api/products/${id}`);
+// why should I keep a global state here?
+// https://stackoverflow.com/questions/35328056/react-redux-should-all-component-states-be-kept-in-redux-store
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { id } = params!;
+  const data = await fetch(`http://localhost:5000/api/products/${id}`);
 
-    const product = await data.json();
+  const product = await data.json();
 
-    store.dispatch(productDetail(product, !data.ok));
-
-    return {
-      props: {},
-    };
-  }
-);
+  return {
+    props: {
+      product,
+      err: !data.ok,
+    },
+  };
+};
