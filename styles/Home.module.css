@@ -1,0 +1,15 @@
+.prodContainer {
+    padding: 0 2rem 2rem 2rem;
+}
+
+.subSection{
+    padding-bottom: 2rem;
+}
+
+.horizontalList {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    max-width: 100%;
+    overflow: auto;
+  }

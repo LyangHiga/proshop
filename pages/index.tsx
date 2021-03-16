@@ -1,5 +1,5 @@
 import { GetStaticProps } from "next";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, List, ListItem } from "@material-ui/core";
 
 import ProductModel from "../models/Product";
 import Product from "../components/Product";
@@ -7,33 +7,41 @@ import Product from "../components/Product";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-import useStyles from "../styles/indexStyles";
+import styles from "../styles/Home.module.css";
 
 interface HomeProps {
   products: ProductModel[];
 }
 
 export default function Home({ products }: HomeProps) {
-  const classes = useStyles();
-
   return (
     <div>
       <Header />
       <main className="main">
-        <Grid container>
-          <Grid item>
-            <Typography variant="h4">Latest Products</Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            justify="center"
-            className={classes.prodContainer}
-          >
-            {products.map((p) => (
-              <Product product={p} key={p.name} />
+        <Grid container justify="center">
+          <Typography variant="h4" className={styles.subSection}>
+            Latest Products
+          </Typography>
+
+          <List className={styles.horizontalList}>
+            {products.map((product) => (
+              <ListItem key={`item-1-${product._id}`}>
+                <Product product={product} key={product._id} />
+              </ListItem>
             ))}
-          </Grid>
+          </List>
+
+          <Typography variant="h4" className={styles.subSection}>
+            Top Sellers
+          </Typography>
+
+          <List className={styles.horizontalList}>
+            {products.map((product) => (
+              <ListItem key={`item-2-${product._id}`}>
+                <Product product={product} key={product._id} />
+              </ListItem>
+            ))}
+          </List>
         </Grid>
       </main>
       <Footer />

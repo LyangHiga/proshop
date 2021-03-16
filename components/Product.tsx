@@ -1,12 +1,6 @@
 import Link from "next/Link";
 import Image from "next/image";
-import {
-  Typography,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-} from "@material-ui/core";
+import { Typography, Card, CardContent } from "@material-ui/core";
 
 import Review from "./Review";
 import ProductModel from "../models/Product";
@@ -26,8 +20,8 @@ const Product = ({ product }: ProductProps) => {
           <Image
             src={product.image}
             alt={`${product.name} photo`}
-            width={300}
-            height={300}
+            width={250}
+            height={250}
           />
           <Typography
             className={classes.title}
@@ -37,16 +31,8 @@ const Product = ({ product }: ProductProps) => {
             <strong>{product.name}</strong>
           </Typography>
           <Review stars={product.rating} numberReviews={product.numReviews} />
-          <Typography
-            className={classes.price}
-            style={{ display: "inline-block" }}
-          >
-            ${product.price}
-          </Typography>
+          <Typography className={classes.price}>${product.price}</Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
       </Card>
     </Link>
   );
