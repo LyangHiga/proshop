@@ -1,9 +1,5 @@
+import { GetStaticProps } from "next";
 import { Grid, Typography } from "@material-ui/core";
-
-import { useSelector } from "react-redux";
-import { storeWrapper } from "../store/store";
-import { productList } from "../store/actions/product/productListActions";
-import { RootState } from "../store/reducers/reducers";
 
 import ProductModel from "../models/Product";
 import Product from "../components/Product";
@@ -13,11 +9,12 @@ import Footer from "../components/Footer";
 
 import useStyles from "../styles/indexStyles";
 
-export default function Home() {
+interface HomeProps {
+  products: ProductModel[];
+}
+
+export default function Home({ products }: HomeProps) {
   const classes = useStyles();
-  const products: ProductModel[] = useSelector(
-    (state: RootState) => state.productList
-  );
 
   return (
     <div>
@@ -44,14 +41,14 @@ export default function Home() {
   );
 }
 
-export const getStaticProps = storeWrapper.getStaticProps(async ({ store }) => {
+// why should I keep a global state here?
+// https://stackoverflow.com/questions/35328056/react-redux-should-all-component-states-be-kept-in-redux-store
+export const getStaticProps: GetStaticProps = async () => {
   const res = await fetch("http://localhost:5000/api/products");
   const products: ProductModel[] = await res.json();
 
-  store.dispatch(productList(products));
-
   return {
-    props: {},
+    props: { products },
     revalidate: 10,
   };
-});
+};
