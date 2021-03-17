@@ -3,8 +3,7 @@ import { Typography, Divider } from "@material-ui/core";
 import Review from "./Review";
 
 import ProductModel from "../models/Product";
-
-import useStyles from "../styles/ProductDetailsStyles";
+import useStyles from "../styles/ProductInfoStyles";
 
 interface ProdDetailsProp {
   product: ProductModel;

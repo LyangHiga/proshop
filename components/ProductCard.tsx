@@ -18,7 +18,7 @@ import { addToCart } from "../store/actions/cart/cartAction";
 
 import ProductModel from "../models/Product";
 
-import useStyles from "../styles/ProductDetailsStyles";
+import useStyles from "../styles/ProductCardStyles";
 
 interface ProdCardProp {
   product: ProductModel;
