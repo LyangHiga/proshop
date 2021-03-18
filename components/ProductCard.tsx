@@ -86,7 +86,7 @@ const ProductCard = ({ product }: ProdCardProp) => {
           className={classes.cardTextContainer}
         >
           <Typography variant="body1">Status: </Typography>
-          <Typography variant="body1" className={classes.cardText}>
+          <Typography variant="body1" className={classes.cardText} id="status">
             {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
           </Typography>
         </Grid>
@@ -97,7 +97,7 @@ const ProductCard = ({ product }: ProdCardProp) => {
         <Grid container justify="center" alignItems="center">
           <Grid item>
             <Button
-              name="btn-card-add-to-cart"
+              id="btn-card-add-to-cart"
               variant="contained"
               color="primary"
               size="large"
