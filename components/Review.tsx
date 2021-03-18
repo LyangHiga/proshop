@@ -3,7 +3,7 @@ import StarHalfIcon from "@material-ui/icons/StarHalf";
 import StarOutlineIcon from "@material-ui/icons/StarOutline";
 
 import { Typography, Grid } from "@material-ui/core";
-import styles from "../styles/Review.module.css";
+import useStyles from "../styles/ReviewStyles";
 
 interface ReviewProps {
   stars: number;
@@ -11,26 +11,27 @@ interface ReviewProps {
 }
 
 const Review = (props: ReviewProps) => {
+  const classes = useStyles();
   const numberOfStars = Number.isInteger(props.stars)
     ? props.stars
     : props.stars - 0.5;
   const halfStar = Number.isInteger(props.stars) ? null : (
-    <StarHalfIcon className={styles.star} />
+    <StarHalfIcon className={classes.star} />
   );
   const emptyStars = halfStar ? 4 - numberOfStars : 5 - numberOfStars;
 
   return (
     <Grid container alignItems="center" justify="center">
       {[...Array(numberOfStars)].map((e, i) => (
-        <StarIcon key={i} className={styles.star} />
+        <StarIcon key={i} className={classes.star} />
       ))}
       {halfStar}
       {props.stars > 4
         ? null
         : [...Array(emptyStars)].map((e, i) => (
-            <StarOutlineIcon key={i} className={styles.star} />
+            <StarOutlineIcon key={i} className={classes.star} />
           ))}
-      <Typography variant="overline" className={styles.nReview}>
+      <Typography variant="overline" className={classes.nReview}>
         {props.numberReviews} Reviews
       </Typography>
     </Grid>
