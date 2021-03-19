@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
   productText: {
     margin: "0 1.5rem 0 1.5rem",
   },
+  productPrice: {
+    margin: "0 1.5rem 0 1.5rem",
+    textAlign: "center",
+  },
   divider: {
     margin: "0.5rem 0 0.5rem 0",
   },

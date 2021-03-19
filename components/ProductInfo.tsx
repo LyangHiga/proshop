@@ -21,7 +21,7 @@ const ProductInfo = ({ product }: ProdDetailsProp) => {
         <Review stars={product.rating} numberReviews={product.numReviews} />
       </div>
       <Divider className={classes.divider} />
-      <Typography className={classes.productText}>
+      <Typography className={classes.productPrice}>
         Price: ${product.price}
       </Typography>
       <Divider className={classes.divider} />
