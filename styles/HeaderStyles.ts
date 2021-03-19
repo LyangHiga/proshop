@@ -2,11 +2,12 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    maxWidth: "100%",
   },
   title: {
     flexGrow: 1,
     marginLeft: "2rem",
+    cursor: "pointer",
   },
   buttonsContainer: {
     marginLeft: "auto",
