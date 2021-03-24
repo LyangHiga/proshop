@@ -38,7 +38,7 @@ function Header() {
               <IconButton color="inherit">
                 <PersonIcon />
               </IconButton>
-              <Link href={`/`}>
+              <Link href={`/login`}>
                 <Button color="inherit" className={classes.button}>
                   Sign In
                 </Button>
