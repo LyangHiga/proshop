@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     marginLeft: "-1rem",
   },
+  linkContainer: {
+    display: "inline-block",
+  },
+  menu: {
+    marginTop: "2rem",
+  },
 }));
 
 export default useStyles;

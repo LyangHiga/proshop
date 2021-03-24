@@ -7,3 +7,10 @@ export const loginAction = (user: User) => {
     payload: user,
   };
 };
+
+export const logout = () => {
+  return {
+    type: LOGOUT,
+    payload: null,
+  };
+};

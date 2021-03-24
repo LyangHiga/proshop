@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 
-import { LOGIN } from "../../actions/actions";
+import { LOGIN, LOGOUT } from "../../actions/actions";
 import User from "../../../models/User";
 
 const initialState = {} as User;
@@ -17,6 +17,9 @@ const userReducer = (state = initialState, action: AnyAction) => {
       // PROBLEM: localStorage in Server Side (node) is not available
       localStorage.setItem("user", JSON.stringify(user));
       return action.payload;
+    case LOGOUT:
+      localStorage.removeItem("user");
+      return initialState;
     default:
       return state;
   }

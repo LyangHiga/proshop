@@ -1,19 +1,55 @@
 import Link from "next/Link";
-
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   AppBar,
   Toolbar,
   Typography,
   Button,
   IconButton,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PersonIcon from "@material-ui/icons/Person";
 
+import { loginAction, logout } from "../store/actions/user/userAction";
 import useStyles from "../styles/HeaderStyles";
+import User from "../models/User";
+import { RootState } from "../store/reducers/reducers";
 
 function Header() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user) as User;
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const logoutHandler = () => {
+    handleCloseMenu();
+    dispatch(logout());
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      // only way where localStorage is available
+      // I can't get it in store, HYDARTE action or get server side props
+      // localStorage is only available in client side (it's browser's localStorage)
+      const localStorageUser = JSON.parse(
+        localStorage.getItem("user")!
+      ) as User;
+      dispatch(loginAction(localStorageUser));
+    }
+  }, []);
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -25,25 +61,56 @@ function Header() {
           </Link>
           <div className={classes.buttonsContainer}>
             <div className={classes.buttonContainer}>
-              <IconButton color="inherit">
-                <ShoppingCartIcon />
-              </IconButton>
               <Link href={`/cart`}>
-                <Button color="inherit" className={classes.button}>
-                  Cart
-                </Button>
+                <div className={classes.linkContainer}>
+                  <IconButton color="inherit">
+                    <ShoppingCartIcon />
+                  </IconButton>
+                  <Button color="inherit" className={classes.button}>
+                    Cart
+                  </Button>
+                </div>
               </Link>
             </div>
-            <div className={classes.buttonContainer}>
-              <IconButton color="inherit">
-                <PersonIcon />
-              </IconButton>
-              <Link href={`/login`}>
-                <Button color="inherit" className={classes.button}>
-                  Sign In
+            {user.name ? (
+              <div className={classes.buttonContainer}>
+                <Button
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleClickMenu}
+                  className={classes.button}
+                  color="inherit"
+                >
+                  {user.name}
                 </Button>
-              </Link>
-            </div>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleCloseMenu}
+                  className={classes.menu}
+                >
+                  <Link href={`/profile`}>
+                    <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+                  </Link>
+                  <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                </Menu>
+              </div>
+            ) : (
+              <div className={classes.buttonContainer}>
+                <Link href={`/login`}>
+                  <div className={classes.linkContainer}>
+                    <IconButton color="inherit">
+                      <PersonIcon />
+                    </IconButton>
+                    <Button color="inherit" className={classes.button}>
+                      Sign In
+                    </Button>
+                  </div>
+                </Link>
+              </div>
+            )}
           </div>
         </Toolbar>
       </AppBar>
