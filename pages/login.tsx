@@ -1,3 +1,4 @@
+import Link from "next/Link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -100,7 +101,10 @@ const login = () => {
               </Button>
             </Grid>
             <Typography className={classes.registerText}>
-              New Customer? <strong>Register</strong>
+              New Customer?{" "}
+              <Link href={`/register`}>
+                <strong style={{ cursor: "pointer" }}>Register</strong>
+              </Link>
             </Typography>
           </form>
         </Grid>
