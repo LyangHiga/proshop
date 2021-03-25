@@ -1,3 +1,5 @@
+import Cookie from "js-cookie";
+import { addMinutes } from "date-fns";
 import { AnyAction } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 
@@ -13,12 +15,14 @@ const userReducer = (state = initialState, action: AnyAction) => {
       return action.payload.user;
     case LOGIN:
       const user = action.payload as User;
-      // TODO: move to a better place ?
-      // PROBLEM: localStorage in Server Side (node) is not available
-      localStorage.setItem("user", JSON.stringify(user));
+      // Cookies are available also in server side, different from localStorage
+      // use Cookies not localStorage !!!
+      Cookie.set("user", JSON.stringify(user), {
+        expires: addMinutes(new Date(), 10),
+      });
       return action.payload;
     case LOGOUT:
-      localStorage.removeItem("user");
+      Cookie.remove("user");
       return initialState;
     default:
       return state;

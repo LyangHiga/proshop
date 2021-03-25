@@ -1,5 +1,5 @@
 import Link from "next/Link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   AppBar,
@@ -13,7 +13,7 @@ import {
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PersonIcon from "@material-ui/icons/Person";
 
-import { loginAction, logout } from "../store/actions/user/userAction";
+import { logout } from "../store/actions/user/userAction";
 import useStyles from "../styles/HeaderStyles";
 import User from "../models/User";
 import { RootState } from "../store/reducers/reducers";
@@ -37,18 +37,6 @@ function Header() {
     handleCloseMenu();
     dispatch(logout());
   };
-
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      // only way where localStorage is available
-      // I can't get it in store, HYDARTE action or get server side props
-      // localStorage is only available in client side (it's browser's localStorage)
-      const localStorageUser = JSON.parse(
-        localStorage.getItem("user")!
-      ) as User;
-      dispatch(loginAction(localStorageUser));
-    }
-  }, []);
 
   return (
     <div className={classes.root}>

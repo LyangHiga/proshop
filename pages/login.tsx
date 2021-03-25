@@ -1,7 +1,7 @@
 import Link from "next/Link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Typography,
   Grid,
@@ -15,45 +15,46 @@ import { loginAction } from "../store/actions/user/userAction";
 import useStyles from "../styles/loginStyles";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { RootState } from "../store/reducers/reducers";
 
 const login = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user) as User;
   const classes = useStyles();
   const router = useRouter();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [openSnack, setOpenSnack] = useState(false);
 
+  // check if user has a valid login (cookie expires in 10 min)
+  // we could check in header (almost all pages)
+  //  also in server side props unnecessary
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-      // only way where localStorage is available
-      // I can't get it in store, HYDARTE action or get server side props
-      // localStorage is only available in client side (it's browser's localStorage)
-      const localStorageUser = JSON.parse(
-        localStorage.getItem("user")!
-      ) as User;
-      dispatch(loginAction(localStorageUser));
-      // TODO: check before hand if token is still valid
-      // router.push("/");
+    if (user.name) {
+      router.push("/");
     }
-  }, []);
+  }, [user]);
 
   const loginHandler = async () => {
-    const res = await fetch("http://localhost:5000/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    if (res.ok) {
-      const user = (await res.json()) as User;
-      dispatch(loginAction(user));
-      router.push("/");
-    } else {
+    try {
+      const res = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      if (res.ok) {
+        const user = (await res.json()) as User;
+        dispatch(loginAction(user));
+      } else {
+        setOpenSnack(true);
+      }
+    } catch (err) {
+      console.log(`Error: ${err}`);
       setOpenSnack(true);
     }
   };
