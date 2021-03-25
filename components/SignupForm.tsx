@@ -1,13 +1,28 @@
 import Link from "next/Link";
-import { Grid, TextField, Button, Typography } from "@material-ui/core";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  Snackbar,
+} from "@material-ui/core";
 import { useFormik } from "formik";
 
 import * as Yup from "yup";
 
-import useStyles from "../styles/loginStyles";
+import User from "../models/User";
+import { loginAction } from "../store/actions/user/userAction";
+
+import useStyles from "../styles/registerStyles";
 
 const SignupForm = () => {
   const classes = useStyles();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [openSnack, setOpenSnack] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -34,20 +49,48 @@ const SignupForm = () => {
     },
   });
 
-  const registerHandler = () => {
+  const registerHandler = async () => {
     if (formik.isValid) {
-      console.log("register");
-    } else {
-      console.log("Error");
+      // create a new action for registration is unnecessary
+      // other option is to set up next to use redux-thunk and make this request in async action
+      try {
+        const res = await fetch("http://localhost:5000/api/users/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formik.values.name,
+            email: formik.values.email,
+            password: formik.values.password,
+          }),
+        });
+        if (res.ok) {
+          const user = (await res.json()) as User;
+          dispatch(loginAction(user));
+          router.push("/");
+        } else {
+          setOpenSnack(true);
+        }
+      } catch (err) {
+        console.log(`Error: ${err}`);
+        setOpenSnack(true);
+      }
     }
   };
 
   return (
     <Grid container justify="center" className={classes.formContainer}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnack}
+        onClose={() => setOpenSnack(false)}
+        message="User already exists"
+      />
       <form>
         <Grid item container justify="center">
           <TextField
-            style={{ marginBottom: "1rem" }}
+            className={classes.textField}
             id="name"
             name="name"
             label="Name"
@@ -61,7 +104,7 @@ const SignupForm = () => {
           />
 
           <TextField
-            style={{ marginBottom: "1rem" }}
+            className={classes.textField}
             id="email"
             name="email"
             label="Email"
@@ -74,7 +117,7 @@ const SignupForm = () => {
             helperText={formik.errors.email}
           />
           <TextField
-            style={{ marginBottom: "1rem" }}
+            className={classes.textField}
             id="password"
             name="password"
             label="Password"
@@ -87,7 +130,7 @@ const SignupForm = () => {
             helperText={formik.errors.password}
           />
           <TextField
-            style={{ marginBottom: "1rem" }}
+            className={classes.textField}
             id="confirmPassword"
             name="confirmPassword"
             label="Confirm Password"
@@ -107,7 +150,7 @@ const SignupForm = () => {
             color="primary"
             size="large"
             onClick={registerHandler}
-            style={{ marginTop: "2rem" }}
+            className={classes.registerBtn}
           >
             Sign Up
           </Button>
@@ -115,7 +158,7 @@ const SignupForm = () => {
         <Typography className={classes.registerText}>
           Have an Account?
           <Link href={`/login`}>
-            <strong style={{ cursor: "pointer" }}> Login</strong>
+            <strong> Login</strong>
           </Link>
         </Typography>
       </form>
