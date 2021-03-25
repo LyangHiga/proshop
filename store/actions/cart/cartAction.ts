@@ -1,4 +1,4 @@
-import { CARD_ADD_ITEM, CARD_ADD_LIST, CART_REMOVE_ITEM } from "../actions";
+import { CARD_ADD_ITEM, CART_REMOVE_ITEM } from "../actions";
 
 import Product from "../../../models/Product";
 import Item from "../../../models/Item";
@@ -8,13 +8,6 @@ export const addToCart = (product: Product, qty: number) => {
   return {
     type: CARD_ADD_ITEM,
     payload: item,
-  };
-};
-
-export const addListToCart = (items: Item[]) => {
-  return {
-    type: CARD_ADD_LIST,
-    payload: items,
   };
 };
 
