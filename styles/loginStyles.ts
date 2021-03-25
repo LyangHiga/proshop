@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   registerText: {
     marginTop: "2rem",
     textAlign: "center",
+    cursor: "pointer",
   },
 }));
 

@@ -104,7 +104,7 @@ const login = () => {
             <Typography className={classes.registerText}>
               New Customer?{" "}
               <Link href={`/register`}>
-                <strong style={{ cursor: "pointer" }}>Register</strong>
+                <strong>Register</strong>
               </Link>
             </Typography>
           </form>
