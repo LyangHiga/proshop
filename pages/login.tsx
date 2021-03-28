@@ -101,12 +101,11 @@ const login = () => {
                 Sign In
               </Button>
             </Grid>
-            <Typography className={classes.registerText}>
-              New Customer?{" "}
-              <Link href={`/register`}>
-                <strong>Register</strong>
-              </Link>
-            </Typography>
+            <Link href={`/register`}>
+              <Typography className={classes.registerText}>
+                New Customer? <strong>Register</strong>
+              </Typography>
+            </Link>
           </form>
         </Grid>
       </main>

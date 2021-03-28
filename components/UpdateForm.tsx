@@ -1,13 +1,17 @@
-import Link from "next/Link";
+// I could reuse SignupForm but I prefer to repeat a little than to
+// handle more than one kind of request per form (SRP vs DRY)
+// maybe I could make a lot of refacts and make both work together
+// lets finish fast, then I can think about it
+
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
   TextField,
   Button,
-  Typography,
   Snackbar,
+  InputLabel,
 } from "@material-ui/core";
 import { useFormik } from "formik";
 
@@ -15,19 +19,30 @@ import * as Yup from "yup";
 
 import User from "../models/User";
 import { loginAction } from "../store/actions/user/userAction";
+import { RootState } from "../store/reducers/reducers";
 
-import useStyles from "../styles/registerStyles";
+import useStyles from "../styles/ProfileStyles";
 
-const SignupForm = () => {
+const UpdateForm = () => {
   const classes = useStyles();
   const router = useRouter();
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user) as User;
   const [openSnack, setOpenSnack] = useState(false);
+
+  // to check if user is not logegd in
+  // more elegant solution:
+  // in profile page use getServerSide props to check if user is logged in
+  //   useEffect(() => {
+  //     if (!user.name) {
+  //       router.replace("/");
+  //     }
+  //   }, []);
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
+      name: user.name,
+      email: user.email,
       password: "",
       confirmPassword: "",
     },
@@ -49,14 +64,13 @@ const SignupForm = () => {
     },
   });
 
-  const registerHandler = async () => {
+  const updateHandler = async () => {
     if (formik.isValid) {
-      // create a new action for registration is unnecessary
-      // other option is to set up next to use redux-thunk and make this request in async action
       try {
-        const res = await fetch("http://localhost:5000/api/users/", {
-          method: "POST",
+        const res = await fetch("http://localhost:5000/api/users/profile", {
+          method: "PUT",
           headers: {
+            Authorization: `Bearer ${user.token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -88,12 +102,14 @@ const SignupForm = () => {
         message="User already exists"
       />
       <form>
-        <Grid item container justify="center">
+        <Grid item container>
+          <InputLabel htmlFor="component-simple" className={classes.label}>
+            Name
+          </InputLabel>
           <TextField
-            className={classes.textField}
+            className={classes.textFieldLabeled}
             id="name"
             name="name"
-            label="Name"
             type="text"
             fullWidth
             onChange={formik.handleChange}
@@ -102,12 +118,13 @@ const SignupForm = () => {
             error={!!formik.errors.name && !!formik.touched.name}
             helperText={formik.errors.name}
           />
-
+          <InputLabel htmlFor="component-simple" className={classes.label}>
+            Email
+          </InputLabel>
           <TextField
-            className={classes.textField}
+            className={classes.textFieldLabeled}
             id="email"
             name="email"
-            label="Email"
             type="email"
             fullWidth
             onChange={formik.handleChange}
@@ -145,25 +162,21 @@ const SignupForm = () => {
             }
             helperText={formik.errors.confirmPassword}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            onClick={registerHandler}
-            className={classes.registerBtn}
-          >
-            Sign Up
-          </Button>
+          <Grid item container justify="center">
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={updateHandler}
+              className={classes.updateBtn}
+            >
+              Update
+            </Button>
+          </Grid>
         </Grid>
-        <Link href={`/login`}>
-          <Typography className={classes.registerText}>
-            Have an Account?
-            <strong> Login</strong>
-          </Typography>
-        </Link>
       </form>
     </Grid>
   );
 };
 
-export default SignupForm;
+export default UpdateForm;
