@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import {
   Card,
@@ -16,7 +17,9 @@ import useStyles from "../styles/CartTotalStyles";
 
 const CartTotal = () => {
   const classes = useStyles();
-  const cartItems = useSelector((state: RootState) => state.cart) as Item[];
+  const cartItems = useSelector(
+    (state: RootState) => state.cart.cartItems
+  ) as Item[];
   return (
     <Card className={classes.card}>
       <CardContent className={classes.cardContent}>
@@ -51,15 +54,16 @@ const CartTotal = () => {
       <CardActions>
         <Grid container justify="center" alignItems="center">
           <Grid item>
-            <Button
-              name="btn-card-add-to-cart"
-              variant="contained"
-              color="primary"
-              size="large"
-              // onClick={AddToCartHandle}
-            >
-              Proceed to Checkout
-            </Button>
+            <Link href="/shipping">
+              <Button
+                name="btn-card-add-to-cart"
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                Proceed to Checkout
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       </CardActions>

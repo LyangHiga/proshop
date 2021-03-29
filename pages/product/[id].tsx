@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import Error from "next/error";
-import Link from "next/Link";
+import Link from "next/link";
 import Image from "next/image";
 
 import { Button, Grid } from "@material-ui/core";

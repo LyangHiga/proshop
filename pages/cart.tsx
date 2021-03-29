@@ -14,8 +14,10 @@ import useStyles from "../styles/CartStyles";
 
 const cart = () => {
   const classes = useStyles();
+  const cartItems = useSelector(
+    (state: RootState) => state.cart.cartItems
+  ) as Item[];
 
-  const cartItems = useSelector((state: RootState) => state.cart) as Item[];
   return (
     <div>
       <Header />

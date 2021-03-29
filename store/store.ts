@@ -8,11 +8,11 @@ import Product from "../models/Product";
 import User from "../models/User";
 
 const makeStore = () => {
-  const cart: Product[] = Cookie.get("cartItems")
+  const cartItems: Product[] = Cookie.get("cartItems")
     ? JSON.parse(Cookie.get("cartItems")!)
     : [];
   const user: User = Cookie.get("user") ? JSON.parse(Cookie.get("user")!) : {};
-  const initialState = { cart, user };
+  const initialState = { cart: { cartItems }, user };
   const store = createStore(reducers, initialState, composeWithDevTools());
 
   return store;
