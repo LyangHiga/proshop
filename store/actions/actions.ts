@@ -5,6 +5,7 @@ export const PRODUCT_DETAIL = "PRODUCT_DETAIL";
 // CART
 export const CARD_ADD_ITEM = "CARD_ADD_ITEM";
 export const CART_REMOVE_ITEM = "CART_REMOVE_ITEM";
+export const CART_SAVE_SHIPPING_ADDRESS = "CART_SAVE_SHIPPING_ADDRESS";
 
 // USER
 export const LOGIN = "LOGIN";

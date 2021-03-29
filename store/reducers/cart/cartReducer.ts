@@ -1,16 +1,28 @@
 import Cookie from "js-cookie";
 import { AnyAction } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
-import { CARD_ADD_ITEM, CART_REMOVE_ITEM } from "../../actions/actions";
+import {
+  CARD_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+} from "../../actions/actions";
 
 import Item from "../../../models/Item";
+import ShippingAddress from "../../../models/ShippingAddress";
 
 interface cartType {
   cartItems: Item[];
+  shippingAddress: ShippingAddress;
 }
 
 const initialState: cartType = {
   cartItems: [],
+  shippingAddress: {
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "",
+  },
 };
 
 const cartReducer = (state = initialState, action: AnyAction) => {
@@ -33,6 +45,9 @@ const cartReducer = (state = initialState, action: AnyAction) => {
       );
       Cookie.set("cartItems", JSON.stringify(newCartItems));
       return { ...state, cartItems: newCartItems };
+    case CART_SAVE_SHIPPING_ADDRESS:
+      Cookie.set("shippingAddress", JSON.stringify(action.payload));
+      return { ...state, shippingAddress: action.payload };
 
     default:
       return state;

@@ -1,34 +1,52 @@
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
-import {
-  Grid,
-  Typography,
-  TextField,
-  Button,
-  Snackbar,
-  InputLabel,
-} from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
+
+import { Grid, Typography, TextField, Button } from "@material-ui/core";
 import { useFormik } from "formik";
 
 import * as Yup from "yup";
 
 import useStyles from "../styles/ShippingStyles";
 
+import ShippingAddress from "../models/ShippingAddress";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+import { saveShippingAddress } from "../store/actions/cart/cartAction";
+import { RootState } from "../store/reducers/reducers";
+
 const shipping = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const shippingAddress = useSelector(
+    (state: RootState) => state.cart.shippingAddress
+  ) as ShippingAddress;
+  console.log(shippingAddress);
+
+  const submitHandler = () => {
+    const addr: ShippingAddress = {
+      address: formik.values.address,
+      city: formik.values.city,
+      postalCode: formik.values.postalCode,
+      country: formik.values.country,
+    };
+    dispatch(saveShippingAddress(addr));
+    router.push("/payment");
+  };
+
   const formik = useFormik({
     initialValues: {
-      address: "",
-      city: "",
-      postalCode: "",
-      country: "",
+      address: shippingAddress.address,
+      city: shippingAddress.city,
+      postalCode: shippingAddress.postalCode,
+      country: shippingAddress.country,
     },
     validationSchema: Yup.object({
       address: Yup.string()
-        .max(15, "Must be 5 characters or more")
+        .min(5, "Must be 5 characters or more")
         .required("Name Required"),
       city: Yup.string().required("City is Required"),
       postalCode: Yup.string().required("Postal Code is required"),
@@ -107,7 +125,7 @@ const shipping = () => {
                 variant="contained"
                 color="primary"
                 size="large"
-                // onClick={registerHandler}
+                onClick={submitHandler}
                 className={classes.btn}
               >
                 Continue
