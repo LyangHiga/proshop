@@ -3,7 +3,13 @@ import { useRouter } from "next/router";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { Grid, Typography, TextField, Button } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  InputLabel,
+} from "@material-ui/core";
 import { useFormik } from "formik";
 
 import * as Yup from "yup";
@@ -11,6 +17,7 @@ import * as Yup from "yup";
 import useStyles from "../styles/ShippingStyles";
 
 import ShippingAddress from "../models/ShippingAddress";
+import CheckoutSteps from "../components/CheckoutSteps";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -61,17 +68,18 @@ const shipping = () => {
     <div>
       <Header />
       <main className="main">
+        <CheckoutSteps s1={false} s2={false} />
         <Typography variant="h4" className={classes.title}>
           Shipping
         </Typography>
         <Grid container justify="center">
           <form>
-            <Grid item container justify="center">
+            <Grid item container>
+              <InputLabel htmlFor="address">Address</InputLabel>
               <TextField
                 className={classes.textField}
                 id="address"
                 name="address"
-                label="Address"
                 type="text"
                 fullWidth
                 onChange={formik.handleChange}
@@ -80,11 +88,13 @@ const shipping = () => {
                 error={!!formik.errors.address && !!formik.touched.address}
                 helperText={formik.errors.address}
               />
+              <InputLabel htmlFor="city" className={classes.label}>
+                City
+              </InputLabel>
               <TextField
                 className={classes.textField}
                 id="city"
                 name="city"
-                label="City"
                 type="text"
                 fullWidth
                 onChange={formik.handleChange}
@@ -93,11 +103,13 @@ const shipping = () => {
                 error={!!formik.errors.city && !!formik.touched.city}
                 helperText={formik.errors.city}
               />
+              <InputLabel htmlFor="postalCode" className={classes.label}>
+                Postal Code
+              </InputLabel>
               <TextField
                 className={classes.textField}
                 id="postalCode"
                 name="postalCode"
-                label="Postal Code"
                 type="text"
                 fullWidth
                 onChange={formik.handleChange}
@@ -108,11 +120,13 @@ const shipping = () => {
                 }
                 helperText={formik.errors.postalCode}
               />
+              <InputLabel htmlFor="country" className={classes.label}>
+                Country
+              </InputLabel>
               <TextField
                 className={classes.textField}
                 id="country"
                 name="country"
-                label="Country"
                 type="text"
                 fullWidth
                 onChange={formik.handleChange}
@@ -121,6 +135,8 @@ const shipping = () => {
                 error={!!formik.errors.country && !!formik.touched.country}
                 helperText={formik.errors.country}
               />
+            </Grid>
+            <Grid item container justify="center">
               <Button
                 variant="contained"
                 color="primary"
