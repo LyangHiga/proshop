@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+
+import { savePaymentMethod } from "../store/actions/cart/cartAction";
+
 import {
   Typography,
   Grid,
@@ -22,6 +26,7 @@ const payment = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const classes = useStyles();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPaymentMethod((event.target as HTMLInputElement).value);
@@ -29,7 +34,7 @@ const payment = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(paymentMethod);
+    dispatch(savePaymentMethod(paymentMethod));
     router.push("/placeorder");
   };
   return (

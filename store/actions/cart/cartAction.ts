@@ -2,6 +2,7 @@ import {
   CARD_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
+  CART_SAVE_PAYMENT_METHOD,
 } from "../actions";
 
 import Product from "../../../models/Product";
@@ -27,5 +28,12 @@ export const saveShippingAddress = (address: ShippingAddress) => {
   return {
     type: CART_SAVE_SHIPPING_ADDRESS,
     payload: address,
+  };
+};
+
+export const savePaymentMethod = (paymentMethod: string) => {
+  return {
+    type: CART_SAVE_PAYMENT_METHOD,
+    payload: paymentMethod,
   };
 };
