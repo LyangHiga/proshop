@@ -15,8 +15,12 @@ const makeStore = () => {
   const shippingAddress: ShippingAddress = Cookie.get("shippingAddress")
     ? JSON.parse(Cookie.get("shippingAddress")!)
     : {};
+  const paymentMethod = "";
   const user: User = Cookie.get("user") ? JSON.parse(Cookie.get("user")!) : {};
-  const initialState = { cart: { cartItems, shippingAddress }, user };
+  const initialState = {
+    cart: { cartItems, shippingAddress, paymentMethod },
+    user,
+  };
   const store = createStore(reducers, initialState, composeWithDevTools());
 
   return store;
