@@ -9,7 +9,7 @@ const orderReducer = (state = {}, action: AnyAction) => {
     case HYDRATE:
       return action.payload.order;
     case ORDER_CREATE:
-      return { ...state, order: action.payload.order };
+      return { ...state, order: action.payload };
     default:
       return state;
   }
