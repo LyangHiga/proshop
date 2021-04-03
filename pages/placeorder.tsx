@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import { useSelector } from "react-redux";
 import { Grid, Typography, Divider } from "@material-ui/core";
 
@@ -80,6 +81,22 @@ const placeorder = () => {
       <Footer />
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  // maybe I should persist only the token and call getProfile when it is needed
+  const { user } = req.cookies;
+  if (!user) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 };
 
 export default placeorder;
