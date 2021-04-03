@@ -31,7 +31,6 @@ const shipping = () => {
   const shippingAddress = useSelector(
     (state: RootState) => state.cart.shippingAddress
   ) as ShippingAddress;
-  console.log(shippingAddress);
 
   const submitHandler = () => {
     const addr: ShippingAddress = {

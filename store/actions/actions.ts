@@ -11,3 +11,6 @@ export const CART_SAVE_PAYMENT_METHOD = "CART_SAVE_PAYMENT_METHOD";
 // USER
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+
+// ORDER
+export const ORDER_CREATE = "ORDER_CREATE";
