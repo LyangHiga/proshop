@@ -5,9 +5,10 @@ import Cookie from "js-cookie";
 
 import { reducers } from "./reducers/reducers";
 import Product from "../models/Product";
-import User from "../models/User";
+// import User from "../models/User";
 import ShippingAddress from "../models/ShippingAddress";
 
+// TODO: clean
 const makeStore = () => {
   const cartItems: Product[] = Cookie.get("cartItems")
     ? JSON.parse(Cookie.get("cartItems")!)
@@ -16,10 +17,10 @@ const makeStore = () => {
     ? JSON.parse(Cookie.get("shippingAddress")!)
     : {};
   const paymentMethod = "";
-  const user: User = Cookie.get("user") ? JSON.parse(Cookie.get("user")!) : {};
+  // const user: User = Cookie.get("user") ? JSON.parse(Cookie.get("user")!) : {};
   const initialState = {
     cart: { cartItems, shippingAddress, paymentMethod },
-    user,
+    // user,
   };
   const store = createStore(reducers, initialState, composeWithDevTools());
 

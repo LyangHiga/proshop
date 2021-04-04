@@ -20,9 +20,16 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   const { id } = params!;
-  // TODO: Keep only token in cookie and remove usr from global state
-  const { token } = JSON.parse(req.cookies.user);
-  // check if user is logged in
+  const { user } = req.cookies;
+  if (!user) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const { token } = JSON.parse(user);
   if (!token) {
     return {
       redirect: {

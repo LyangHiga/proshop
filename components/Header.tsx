@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import Cookie from "js-cookie";
 import {
   AppBar,
   Toolbar,
@@ -13,16 +13,14 @@ import {
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PersonIcon from "@material-ui/icons/Person";
 
-import { logout } from "../store/actions/user/userAction";
 import useStyles from "../styles/HeaderStyles";
-import User from "../models/User";
-import { RootState } from "../store/reducers/reducers";
 
 function Header() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user) as User;
-
+  const user = Cookie.get("user");
+  const [isLogged, setIsLogged] = useState<boolean>(
+    !user ? false : JSON.parse(user) ? true : false
+  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,7 +33,8 @@ function Header() {
 
   const logoutHandler = () => {
     handleCloseMenu();
-    dispatch(logout());
+    Cookie.remove("user");
+    setIsLogged(false);
   };
 
   return (
@@ -60,7 +59,7 @@ function Header() {
                 </div>
               </Link>
             </div>
-            {user.name ? (
+            {isLogged ? (
               <div className={classes.buttonContainer}>
                 <Button
                   aria-controls="simple-menu"
@@ -69,7 +68,7 @@ function Header() {
                   className={classes.button}
                   color="inherit"
                 >
-                  {user.name}
+                  {JSON.parse(user!).name}
                 </Button>
                 <Menu
                   id="simple-menu"

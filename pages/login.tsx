@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Cookie from "js-cookie";
+import { addMinutes } from "date-fns";
 import {
   Typography,
   Grid,
@@ -11,17 +12,18 @@ import {
 } from "@material-ui/core";
 
 import User from "../models/User";
-import { loginAction } from "../store/actions/user/userAction";
 import useStyles from "../styles/loginStyles";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { RootState } from "../store/reducers/reducers";
 
 const login = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user) as User;
   const classes = useStyles();
   const router = useRouter();
+  // const [user,setUser] = useState<User>()
+  const user = Cookie.get("user");
+  const [isLogged, setIsLogged] = useState<boolean>(
+    !user ? false : JSON.parse(user) ? true : false
+  );
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [openSnack, setOpenSnack] = useState(false);
@@ -30,10 +32,13 @@ const login = () => {
   // we could check in header (almost all pages)
   //  also in server side props unnecessary
   useEffect(() => {
-    if (user.name) {
-      router.push("/");
+    if (isLogged) {
+      const { token } = JSON.parse(Cookie.get("user")!);
+      if (token) {
+        router.back();
+      }
     }
-  }, [user]);
+  }, [isLogged]);
 
   const loginHandler = async () => {
     try {
@@ -49,7 +54,14 @@ const login = () => {
       });
       if (res.ok) {
         const user = (await res.json()) as User;
-        dispatch(loginAction(user));
+        Cookie.set(
+          "user",
+          JSON.stringify({ token: user.token, name: user.name }),
+          {
+            expires: addMinutes(new Date(), 10),
+          }
+        );
+        setIsLogged(true);
       } else {
         setOpenSnack(true);
       }

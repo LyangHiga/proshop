@@ -87,10 +87,8 @@ const payment = () => {
   );
 };
 
-// We could also check in runtime using useEffect
-// We could try some kind of HOC (withAuth) for this code
+/// We could also check in runtime using useEffect
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  // maybe I should persist only the token and call getProfile when it is needed
   const { user } = req.cookies;
   if (!user) {
     return {
@@ -100,9 +98,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
+  const { token } = JSON.parse(user);
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {},
   };
 };
-
 export default payment;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Cookie from "js-cookie";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -15,7 +16,6 @@ import {
 
 import Order from "../models/Order";
 import Item from "../models/Item";
-import User from "../models/User";
 import ShippingAddress from "../models/ShippingAddress";
 
 import { createOrder } from "../store/actions/order/orderAction";
@@ -23,6 +23,7 @@ import { RootState } from "../store/reducers/reducers";
 
 import useStyles from "../styles/OrderSummaryStyles";
 
+// TODO: move to models
 interface Cart {
   cartItems: Item[];
   shippingAddress: ShippingAddress;
@@ -39,8 +40,6 @@ const OrderSummary = () => {
     (state: RootState) => state.cart
   ) as Cart;
 
-  // TODO: Only keep token (remove from redux state ) in Cookies
-  const user = useSelector((state: RootState) => state.user) as User;
   const itemsPrice =
     Math.round(
       (cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0) +
@@ -57,10 +56,12 @@ const OrderSummary = () => {
     // api request
     if (cartItems && shippingAddress && paymentMethod) {
       try {
+        // Token was alerady checked in get server side props (place order page)
+        const { token } = JSON.parse(Cookie.get("user")!);
         const res = await fetch("http://localhost:5000/api/orders/", {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({

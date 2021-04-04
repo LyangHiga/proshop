@@ -83,10 +83,19 @@ const placeorder = () => {
   );
 };
 
+// We could also check in runtime using useEffect in UpdateForm, commented code in UpdateForm Component!
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  // maybe I should persist only the token and call getProfile when it is needed
   const { user } = req.cookies;
   if (!user) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const { token } = JSON.parse(user);
+  if (!token) {
     return {
       redirect: {
         destination: "/login",

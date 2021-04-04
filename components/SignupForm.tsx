@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import Cookie from "js-cookie";
+import { addMinutes } from "date-fns";
 import {
   Grid,
   TextField,
@@ -14,14 +15,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import User from "../models/User";
-import { loginAction } from "../store/actions/user/userAction";
 
 import useStyles from "../styles/registerStyles";
 
 const SignupForm = () => {
   const classes = useStyles();
   const router = useRouter();
-  const dispatch = useDispatch();
   const [openSnack, setOpenSnack] = useState(false);
 
   const formik = useFormik({
@@ -67,8 +66,14 @@ const SignupForm = () => {
         });
         if (res.ok) {
           const user = (await res.json()) as User;
-          dispatch(loginAction(user));
-          router.push("/");
+          Cookie.set(
+            "user",
+            JSON.stringify({ token: user.token, name: user.name }),
+            {
+              expires: addMinutes(new Date(), 10),
+            }
+          );
+          router.back();
         } else {
           setOpenSnack(true);
         }

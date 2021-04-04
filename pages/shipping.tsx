@@ -156,7 +156,6 @@ const shipping = () => {
 
 // We could also check in runtime using useEffect
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  // maybe I should persist only the token and call getProfile when it is needed
   const { user } = req.cookies;
   if (!user) {
     return {
@@ -166,6 +165,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
+  const { token } = JSON.parse(user);
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {},
   };

@@ -7,8 +7,13 @@ import UpdateForm from "../components/UpdateForm";
 import Footer from "../components/Footer";
 
 import useStyles from "../styles/registerStyles";
+import User from "../models/User";
 
-const profile = () => {
+interface ProfileProps {
+  user: User;
+}
+
+const profile = ({ user }: ProfileProps) => {
   const classes = useStyles();
   return (
     <div>
@@ -19,7 +24,7 @@ const profile = () => {
             <Typography variant="h4" className={classes.title}>
               User Profile
             </Typography>
-            <UpdateForm />
+            <UpdateForm user={user} />
           </Grid>
         </Grid>
       </main>
@@ -30,7 +35,6 @@ const profile = () => {
 
 // We could also check in runtime using useEffect in UpdateForm, commented code in UpdateForm Component!
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  // maybe I should persist only the token and call getProfile when it is needed
   const { user } = req.cookies;
   if (!user) {
     return {
@@ -40,8 +44,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     };
   }
+  const { token } = JSON.parse(user);
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const res = await fetch("http://localhost:5000/api/users/profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const profile = (await res.json()) as User;
   return {
-    props: {},
+    props: { user: profile },
   };
 };
 
