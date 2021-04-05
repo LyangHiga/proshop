@@ -64,7 +64,7 @@ const placeorder = () => {
               <Typography variant="h5" className={classes.sectionTitle}>
                 Order Items
               </Typography>
-              {cartItems.map((item, i) => (
+              {cartItems.map((item) => (
                 <Grid item className={classes.sectionItem}>
                   <OrderItem item={item} />
                 </Grid>

@@ -25,8 +25,8 @@ export default function Home({ products }: HomeProps) {
 
           <List className={styles.horizontalList}>
             {products.map((product) => (
-              <ListItem key={`item-1-${product._id}`}>
-                <Product product={product} key={product._id} />
+              <ListItem key={`item-1-${product.product}`}>
+                <Product product={product} key={product.product} />
               </ListItem>
             ))}
           </List>
@@ -37,8 +37,8 @@ export default function Home({ products }: HomeProps) {
 
           <List className={styles.horizontalList}>
             {products.map((product) => (
-              <ListItem key={`item-2-${product._id}`}>
-                <Product product={product} key={product._id} />
+              <ListItem key={`item-2-${product.product}`}>
+                <Product product={product} key={product.product} />
               </ListItem>
             ))}
           </List>

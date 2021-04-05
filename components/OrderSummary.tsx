@@ -65,7 +65,7 @@ const OrderSummary = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            cartItems,
+            orderItems: cartItems,
             shippingAddress,
             paymentMethod,
             itemsPrice,

@@ -21,6 +21,7 @@ interface ProductDetailProps {
 
 const ProductDeatils = ({ product, err }: ProductDetailProps) => {
   const classes = useStyles();
+  console.log(product);
 
   if (err) {
     // TODO: custom page for product not found
@@ -81,7 +82,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params!;
   const data = await fetch(`http://localhost:5000/api/products/${id}`);
 
-  const product = await data.json();
+  const res = await data.json();
+  const product = { ...res, product: res._id } as ProductModel;
 
   return {
     props: {
