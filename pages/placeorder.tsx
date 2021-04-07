@@ -10,6 +10,7 @@ import { RootState } from "../store/reducers/reducers";
 import ShippingAddress from "../models/ShippingAddress";
 
 import Item from "../models/Item";
+import OrderSection from "../components/OrderSection";
 import OrderItem from "../components/OrderItem";
 import OrderSummary from "../components/OrderSummary";
 
@@ -27,6 +28,8 @@ const placeorder = () => {
     (state: RootState) => state.cart.cartItems
   ) as Item[];
 
+  const address = `${shippingAddress.address}, ${shippingAddress.city} ${shippingAddress.postalCode}, ${shippingAddress.country}`;
+
   return (
     <div>
       <Header />
@@ -40,25 +43,17 @@ const placeorder = () => {
             md={6}
             className={classes.container}
           >
-            <Grid item className={classes.section}>
-              <Typography variant="h5" className={classes.sectionTitle}>
-                Shipping
-              </Typography>
-              <Typography className={classes.sectionItem}>
-                <strong>Addrress:</strong> {shippingAddress.address},{" "}
-                {shippingAddress.city} {shippingAddress.postalCode},{" "}
-                {shippingAddress.country}
-              </Typography>
-            </Grid>
+            <OrderSection
+              title={"Shipping"}
+              sectionItems={["Address"]}
+              sectionAns={[address]}
+            />
             <Divider className={classes.divider} />
-            <Grid item className={classes.section}>
-              <Typography variant="h5" className={classes.sectionTitle}>
-                Payment Method
-              </Typography>
-              <Typography className={classes.sectionItem}>
-                <strong>Method:</strong> {paymentMethod}
-              </Typography>
-            </Grid>
+            <OrderSection
+              title={"Payment Method"}
+              sectionItems={["Method"]}
+              sectionAns={[paymentMethod]}
+            />
             <Divider className={classes.divider} />
             <Grid item className={classes.section}>
               <Typography variant="h5" className={classes.sectionTitle}>
@@ -66,7 +61,7 @@ const placeorder = () => {
               </Typography>
               {cartItems.map((item) => (
                 <Grid item className={classes.sectionItem}>
-                  <OrderItem item={item} />
+                  <OrderItem item={item} key={item._id} />
                 </Grid>
               ))}
             </Grid>
