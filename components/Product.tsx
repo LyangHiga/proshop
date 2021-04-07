@@ -14,7 +14,7 @@ interface ProductProps {
 const Product = ({ product }: ProductProps) => {
   const classes = useStyles();
   return (
-    <Link href={`/product/${product.product}`}>
+    <Link href={`/product/${product._id}`}>
       <Card className={classes.root}>
         <CardContent>
           <Image

@@ -21,7 +21,6 @@ interface ProductDetailProps {
 
 const ProductDeatils = ({ product, err }: ProductDetailProps) => {
   const classes = useStyles();
-  console.log(product);
 
   if (err) {
     // TODO: custom page for product not found
