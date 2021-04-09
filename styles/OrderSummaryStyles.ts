@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     padding: 0,
+    marginBottom: "-1rem",
   },
   cardTextContainer: {
     margin: "1rem",
