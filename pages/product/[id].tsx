@@ -20,12 +20,11 @@ interface ProductDetailProps {
 }
 
 const ProductDeatils = ({ product, err }: ProductDetailProps) => {
-  const classes = useStyles();
-
   if (err) {
     // TODO: custom page for product not found
     return <Error statusCode={404} />;
   }
+  const classes = useStyles();
 
   return (
     <div>
@@ -80,14 +79,21 @@ export default ProductDeatils;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { id } = params!;
   const data = await fetch(`http://localhost:5000/api/products/${id}`);
+  if (data.ok) {
+    const res = await data.json();
+    const product = { ...res, product: res._id } as ProductModel;
 
-  const res = await data.json();
-  const product = { ...res, product: res._id } as ProductModel;
+    return {
+      props: {
+        product,
+        err: !data.ok,
+      },
+    };
+  }
 
   return {
     props: {
-      product,
-      err: !data.ok,
+      err: true,
     },
   };
 };
