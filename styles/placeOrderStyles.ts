@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     marginBottom: "1rem",
   },
+  btn: {
+    margin: "2rem 2rem 0 2rem",
+  },
 }));
 
 export default useStyles;
