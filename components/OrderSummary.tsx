@@ -53,7 +53,7 @@ const OrderSummary = ({ orderPrices }: OrderSummaryProps) => {
         >
           <Typography variant="body1">Shipping </Typography>
           <Typography variant="body1" id="status" className={classes.cardText}>
-            {shippingPrice === 0 ? "FREE" : "$100,00"}
+            {shippingPrice === 0 ? "FREE" : `${orderPrices.shippingPrice}`}
           </Typography>
         </Grid>
         <Divider className={classes.divider} />
