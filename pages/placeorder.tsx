@@ -21,6 +21,7 @@ import OrderSummary from "../components/OrderSummary";
 import useStyles from "../styles/placeOrderStyles";
 
 import { createOrder } from "../store/actions/order/orderAction";
+import { clearCart } from "../store/actions/cart/cartAction";
 
 const placeorder = () => {
   const classes = useStyles();
@@ -84,6 +85,7 @@ const placeorder = () => {
         if (res.ok) {
           const order = (await res.json()) as Order;
           dispatch(createOrder(order));
+          dispatch(clearCart());
           router.push(`/order/${order._id}`);
         }
       } catch (err) {

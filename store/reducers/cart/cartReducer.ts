@@ -6,6 +6,7 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
+  CART_CLEAR,
 } from "../../actions/actions";
 
 import Item from "../../../models/Item";
@@ -53,6 +54,9 @@ const cartReducer = (state = initialState, action: AnyAction) => {
       return { ...state, shippingAddress: action.payload };
     case CART_SAVE_PAYMENT_METHOD:
       return { ...state, paymentMethod: action.payload };
+    case CART_CLEAR:
+      Cookie.set("cartItems", JSON.stringify(initialState.cartItems));
+      return { ...state, cartItems: initialState.cartItems };
     default:
       return state;
   }
