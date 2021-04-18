@@ -1,7 +1,16 @@
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  title: {
+  profileContainer: {
+    marginLeft: "2rem",
+  },
+  ordersContainer: {
+    margin: "0 1rem 0 2rem",
+  },
+  orderTable: {
+    marginTop: "2rem",
+  },
+  text: {
     textAlign: "center",
   },
   formContainer: {

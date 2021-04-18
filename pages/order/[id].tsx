@@ -13,18 +13,9 @@ import OrderItem from "../../components/OrderItem";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Order from "../../models/Order";
+import { PaymentResultType } from "../../models/Order";
 
 import useStyles from "../../styles/OrderDetailStyles";
-
-// From paypal (TODO: MOVE from here?)
-interface PaymentResultType {
-  id: string;
-  status: string;
-  update_time: string;
-  payer: {
-    email_address: string;
-  };
-}
 
 interface OrderProps {
   order: Order;
@@ -199,6 +190,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   // get order
+  // We could move to useEffect,
+  // dont reload page, only update orders info (state)
   const data = await fetch(`http://localhost:5000/api/orders/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
