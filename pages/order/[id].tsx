@@ -13,6 +13,7 @@ import OrderItem from "../../components/OrderItem";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Order from "../../models/Order";
+import User from "../../models/User";
 import { PaymentResultType } from "../../models/Order";
 
 import useStyles from "../../styles/OrderDetailStyles";
@@ -199,7 +200,27 @@ export const getServerSideProps: GetServerSideProps = async ({
     },
   });
 
-  const order = await data.json();
+  const order = (await data.json()) as Order;
+
+  // get profile
+  const resProfile = await fetch("http://localhost:5000/api/users/profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const profile = (await resProfile.json()) as User;
+  // check if this user it the owner if this order
+  // it also checked in backend, but its safier this way
+  if (!order.user || profile._id !== order.user!._id) {
+    // redirect to index
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   // get paypal client id
   const paypalData = await fetch("http://localhost:5000/api/config/paypal");
