@@ -13,7 +13,7 @@ interface UserProps {
 }
 
 const users = ({ users }: UserProps) => {
-  //   console.log(users);
+  if (!users[0]) return null;
   return (
     <div>
       <Header />
@@ -87,6 +87,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       "Content-Type": "application/json",
     },
   });
+
+  // Dont return if status is not 200
+  // users array will be empty, and page return null
+  // if dont retun null will broke because users will be an empty array
+  if (res.status !== 200 || !res.ok) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 
   const users = (await res.json()) as User[];
 
