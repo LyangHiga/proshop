@@ -13,13 +13,15 @@ import {
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PersonIcon from "@material-ui/icons/Person";
 
+import User from "../models/User";
 import useStyles from "../styles/HeaderStyles";
 
 function Header() {
   const classes = useStyles();
-  const user = Cookie.get("user");
+  const userCookie = Cookie.get("user");
+  let user: User | null = null;
   const [isLogged, setIsLogged] = useState<boolean>(
-    !user ? false : JSON.parse(user) ? true : false
+    !userCookie ? false : JSON.parse(userCookie) ? true : false
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -36,6 +38,10 @@ function Header() {
     Cookie.remove("user");
     setIsLogged(false);
   };
+
+  if (isLogged) {
+    user = JSON.parse(userCookie!) as User;
+  }
 
   return (
     <div className={classes.root}>
@@ -59,7 +65,7 @@ function Header() {
                 </div>
               </Link>
             </div>
-            {isLogged ? (
+            {user ? (
               <div className={classes.buttonContainer}>
                 <Button
                   aria-controls="simple-menu"
@@ -68,7 +74,7 @@ function Header() {
                   className={classes.button}
                   color="inherit"
                 >
-                  {JSON.parse(user!).name}
+                  {user!.name}
                 </Button>
                 <Menu
                   id="simple-menu"
@@ -81,6 +87,11 @@ function Header() {
                   <Link href={`/profile`}>
                     <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
                   </Link>
+                  {user!.isAdmin ? (
+                    <Link href={`/admin/users`}>
+                      <MenuItem onClick={handleCloseMenu}>Users</MenuItem>
+                    </Link>
+                  ) : null}
                   <MenuItem onClick={logoutHandler}>Logout</MenuItem>
                 </Menu>
               </div>

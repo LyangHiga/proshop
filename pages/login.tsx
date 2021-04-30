@@ -56,7 +56,15 @@ const login = () => {
         const user = (await res.json()) as User;
         Cookie.set(
           "user",
-          JSON.stringify({ token: user.token, name: user.name }),
+          // not sure about security for authorization
+          // but the real protection is on server side
+          // if someone change to isAdmin true, (but is actually false)
+          // http req will not return and screen will be empty
+          JSON.stringify({
+            token: user.token,
+            name: user.name,
+            isAdmin: user.isAdmin,
+          }),
           {
             expires: addMinutes(new Date(), 10),
           }
