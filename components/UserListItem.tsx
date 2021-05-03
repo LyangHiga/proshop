@@ -7,6 +7,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import User from "../models/User";
 
+import useStyles from "../styles/UserListItemStyles";
+
 interface UserListItemProps {
   user: User;
 }
@@ -16,39 +18,38 @@ const UserListItem = ({ user }: UserListItemProps) => {
 
   // TODO: Link to user profile page (equals to my profile page)
 
+  const classes = useStyles();
+
   return (
     <Grid item container style={{ marginTop: "1.5rem" }}>
-      <Link href={`/user/${user._id}`}>
+      <Link href={`/admin/user/${user._id}`}>
         <Grid item md={3}>
-          <Typography
-            variant="body1"
-            style={{ textAlign: "center", cursor: "pointer" }}
-          >
+          <Typography variant="body1" className={classes.idText}>
             {user._id}
           </Typography>
         </Grid>
       </Link>
       <Grid item md={2}>
-        <Typography variant="body1" style={{ textAlign: "center" }}>
+        <Typography variant="body1" className={classes.text}>
           {user.name}
         </Typography>
       </Grid>
       <Grid item md={2}>
-        <Typography variant="body1" style={{ textAlign: "center" }}>
+        <Typography variant="body1" className={classes.text}>
           {user.email}
         </Typography>
       </Grid>
       <Grid item container md={2} justify="center">
         {user.isAdmin ? (
           <Grid item>
-            <CheckIcon style={{ color: "#2ac46a" }} />
+            <CheckIcon className={classes.checked} />
           </Grid>
         ) : (
-          <ClearIcon style={{ color: "#df3b15" }} />
+          <ClearIcon className={classes.clean} />
         )}
       </Grid>
       <Grid item md={2} container justify="center">
-        <DeleteIcon style={{ color: "#df3b15" }} />
+        <DeleteIcon className={classes.delete} />
       </Grid>
     </Grid>
   );
