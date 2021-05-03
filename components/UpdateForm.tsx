@@ -25,7 +25,7 @@ import useStyles from "../styles/ProfileStyles";
 interface UpdateFormProps {
   user: User;
 }
-
+// TODO: Admin update
 const UpdateForm = ({ user }: UpdateFormProps) => {
   const classes = useStyles();
   const router = useRouter();
