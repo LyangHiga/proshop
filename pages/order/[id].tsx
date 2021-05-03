@@ -180,7 +180,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
-  const { token } = JSON.parse(user);
+  const { token, isAdmin } = JSON.parse(user);
   if (!token) {
     return {
       redirect: {
@@ -210,9 +210,9 @@ export const getServerSideProps: GetServerSideProps = async ({
     },
   });
   const profile = (await resProfile.json()) as User;
-  // check if this user it the owner if this order
+  // check if this user it the owner if this order or admin
   // it also checked in backend, but its safier this way
-  if (!order.user || profile._id !== order.user!._id) {
+  if ((!order.user || profile._id !== order.user!._id) && !isAdmin) {
     // redirect to index
     return {
       redirect: {
