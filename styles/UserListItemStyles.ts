@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
   text: {
     textAlign: "center",
   },
+  isAdminContainer: {
+    cursor: "pointer",
+  },
   checked: {
     color: "#2ac46a",
   },

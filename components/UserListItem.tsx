@@ -26,9 +26,14 @@ interface UserListItemProps {
 }
 
 const UserListItem = ({ user, token }: UserListItemProps) => {
+  const classes = useStyles();
+  const router = useRouter();
+
   const [openAlert, setOpenAlert] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
-  const router = useRouter();
+  const [snackMessage, setSnackMessage] = useState("");
+
+  // Use router.reload after each operation because Admin SHOULD NOT do many actions
 
   const handleRemove = async () => {
     try {
@@ -42,16 +47,41 @@ const UserListItem = ({ user, token }: UserListItemProps) => {
       if (res.ok) {
         router.reload();
       } else {
+        setSnackMessage("User was not deleted");
         setOpenSnack(true);
       }
     } catch (err) {
       console.log(`Error: ${err}`);
+      setSnackMessage("User was not deleted");
       setOpenSnack(true);
     }
     setOpenAlert(false);
   };
 
-  const classes = useStyles();
+  const handleToogleIsAdmin = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/users/${user._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          isAdmin: !user.isAdmin,
+        }),
+      });
+      if (res.ok) {
+        router.reload();
+      } else {
+        setSnackMessage("User is Admin not changed");
+        setOpenSnack(true);
+      }
+    } catch (err) {
+      console.log(`Error: ${err}`);
+      setSnackMessage("User is Admin not changed");
+      setOpenSnack(true);
+    }
+  };
 
   return (
     <Grid item container className={classes.container}>
@@ -72,11 +102,16 @@ const UserListItem = ({ user, token }: UserListItemProps) => {
           {user.email}
         </Typography>
       </Grid>
-      <Grid item container md={2} justify="center">
+      <Grid
+        item
+        container
+        md={2}
+        justify="center"
+        onClick={handleToogleIsAdmin}
+        className={classes.isAdminContainer}
+      >
         {user.isAdmin ? (
-          <Grid item>
-            <CheckIcon className={classes.checked} />
-          </Grid>
+          <CheckIcon className={classes.checked} />
         ) : (
           <ClearIcon className={classes.clean} />
         )}
@@ -108,7 +143,7 @@ const UserListItem = ({ user, token }: UserListItemProps) => {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={openSnack}
         onClose={() => setOpenSnack(false)}
-        message="User was not deleted"
+        message={snackMessage}
       />
     </Grid>
   );
