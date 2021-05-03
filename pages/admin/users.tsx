@@ -10,9 +10,10 @@ import Footer from "../../components/Footer";
 
 interface UserProps {
   users: User[];
+  token: string;
 }
 
-const users = ({ users }: UserProps) => {
+const users = ({ users, token }: UserProps) => {
   if (!users[0]) return null;
   return (
     <div>
@@ -49,7 +50,7 @@ const users = ({ users }: UserProps) => {
               </Typography>
             </Grid>
             {users.map((user) => (
-              <UserListItem user={user} key={user._id} />
+              <UserListItem user={user} token={token} key={user._id} />
             ))}
           </Grid>
         </Grid>
@@ -105,6 +106,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   return {
     props: {
       users,
+      token,
     },
   };
 };
