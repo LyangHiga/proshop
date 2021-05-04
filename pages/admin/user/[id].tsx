@@ -28,7 +28,7 @@ const UserPageAdmin = ({ user, orders }: UserPageAdminProps) => {
             <Typography variant="h4" className={classes.text}>
               User Profile
             </Typography>
-            <UpdateForm user={user} />
+            <UpdateForm user={user} adminUpdate={true} />
           </Grid>
           <Grid
             item

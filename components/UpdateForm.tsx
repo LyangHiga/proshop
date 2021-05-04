@@ -24,9 +24,10 @@ import useStyles from "../styles/ProfileStyles";
 
 interface UpdateFormProps {
   user: User;
+  adminUpdate?: boolean;
 }
-// TODO: Admin update
-const UpdateForm = ({ user }: UpdateFormProps) => {
+
+const UpdateForm = ({ user, adminUpdate }: UpdateFormProps) => {
   const classes = useStyles();
   const router = useRouter();
   const [openSnack, setOpenSnack] = useState(false);
@@ -66,12 +67,13 @@ const UpdateForm = ({ user }: UpdateFormProps) => {
   });
 
   const updateHandler = async () => {
-    if (formik.isValid) {
+    if (formik.isValid && !adminUpdate) {
       try {
+        const { token } = JSON.parse(Cookie.get("user")!);
         const res = await fetch("http://localhost:5000/api/users/profile", {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -89,6 +91,30 @@ const UpdateForm = ({ user }: UpdateFormProps) => {
               expires: addMinutes(new Date(), 10),
             }
           );
+          router.back();
+        } else {
+          setOpenSnack(true);
+        }
+      } catch (err) {
+        console.log(`Error: ${err}`);
+        setOpenSnack(true);
+      }
+    } else if (formik.isValid && adminUpdate) {
+      try {
+        const { token } = JSON.parse(Cookie.get("user")!);
+        const res = await fetch(`http://localhost:5000/api/users/${user._id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formik.values.name,
+            email: formik.values.email,
+            password: formik.values.password,
+          }),
+        });
+        if (res.ok) {
           router.back();
         } else {
           setOpenSnack(true);
