@@ -8,6 +8,8 @@ import UserListItem from "../../components/UserListItem";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
+import useStyles from "../../styles/adminUsersStyles";
+
 interface UserProps {
   users: User[];
   token: string;
@@ -15,37 +17,38 @@ interface UserProps {
 
 const users = ({ users, token }: UserProps) => {
   if (!users[0]) return null;
+  const classes = useStyles();
   return (
     <div>
       <Header />
       <main className="main">
-        <Typography variant="h4" style={{ textAlign: "center" }}>
+        <Typography variant="h4" className={classes.text}>
           Users
         </Typography>
         <Grid container>
-          <Grid item container style={{ marginTop: "2rem" }}>
+          <Grid item container className={classes.container}>
             <Grid item md={3}>
-              <Typography variant="h6" style={{ textAlign: "center" }}>
+              <Typography variant="h6" className={classes.text}>
                 ID
               </Typography>
             </Grid>
             <Grid item md={2}>
-              <Typography variant="h6" style={{ textAlign: "center" }}>
+              <Typography variant="h6" className={classes.text}>
                 Name
               </Typography>
             </Grid>
             <Grid item md={2}>
-              <Typography variant="h6" style={{ textAlign: "center" }}>
+              <Typography variant="h6" className={classes.text}>
                 Email
               </Typography>
             </Grid>
             <Grid item md={2}>
-              <Typography variant="h6" style={{ textAlign: "center" }}>
+              <Typography variant="h6" className={classes.text}>
                 Admin
               </Typography>
             </Grid>
             <Grid item md={2}>
-              <Typography variant="h6" style={{ textAlign: "center" }}>
+              <Typography variant="h6" className={classes.text}>
                 Remove
               </Typography>
             </Grid>
