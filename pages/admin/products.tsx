@@ -14,7 +14,7 @@ interface ProductsProps {
   token: string;
 }
 
-// TODO: Token will be used to make http req in ProductListItem
+// TODO: Create Product
 const products = ({ products, token }: ProductsProps) => {
   const classes = useStyles();
   return (
@@ -57,7 +57,11 @@ const products = ({ products, token }: ProductsProps) => {
               </Typography>
             </Grid>
             {products.map((product) => (
-              <ProductListItem product={product} key={product._id} />
+              <ProductListItem
+                product={product}
+                key={product._id}
+                token={token}
+              />
             ))}
           </Grid>
         </Grid>
